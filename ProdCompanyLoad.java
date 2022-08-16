@@ -135,6 +135,7 @@ public class ProdCompanyLoad{
 
    }
 
+// THIS METHOD LOADS THE DATA TO THE TABLE
    public void prodCompanyLoad()
    {
 
