@@ -13,7 +13,7 @@ public class LanguageLoad{
    private int newMovieID = 0;
    private int rank = 0;
    private String languageName = "";
-   private static final String ENTITY_TYPE = "02";
+   private static final int ENTITY_TYPE = 2;
    private static final String languageNotes = "";
 
    private int previousID = 0;
@@ -164,8 +164,8 @@ public class LanguageLoad{
 
 
             String query = "INSERT INTO " + schema + ".film_country_language VALUES(" +
-                           newMovieID + ", '" +
-                           ENTITY_TYPE + "', " +
+                           newMovieID + ", " +
+                           ENTITY_TYPE + ", " +
                            rank + ", '" +
                            languageName + "', '" +
                            languageNotes + "')";

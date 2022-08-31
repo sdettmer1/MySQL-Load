@@ -13,7 +13,7 @@ public class ProdCompanyLoad{
    private int newMovieID = 0;
    private int rank = 0;
    private String prodCompanyName = "";
-   private static final String COMPANY_TYPE = "01";
+   private static final int COMPANY_TYPE = 1;
    private static final String companyNotes = "";
 
    private int previousID = 0;
@@ -151,7 +151,7 @@ public class ProdCompanyLoad{
             prodRecordCount++;
             oldMovieID = Integer.parseInt( tokens[ 0 ] );
             newMovieID = idtrans.getNewMovieID( connection, oldMovieID );
-            System.out.println("Old ID = " + oldMovieID + " New ID: " + newMovieID);
+ //           System.out.println("Old ID = " + oldMovieID + " New ID: " + newMovieID);
   //          newMovieID = getNewMovieID( oldMovieID);
 
             prodCompanyName = editForApostrophe( tokens[ 1 ] );
@@ -166,8 +166,8 @@ public class ProdCompanyLoad{
 
 
             String query = "INSERT INTO " + schema + ".film_company VALUES(" +
-                           newMovieID + ", '" +
-                           COMPANY_TYPE + "', " +
+                           newMovieID + ", " +
+                           COMPANY_TYPE + ", " +
                            rank + ", '" +
                            prodCompanyName + "', '" +
                            companyNotes + "')";
@@ -175,7 +175,7 @@ public class ProdCompanyLoad{
             if(newMovieID == -1) {
                prodCompanyErrors++;
             } else {
-//               insertTable( query );
+               insertTable( query );
                prodCompanyRowCount++;
             }
          }

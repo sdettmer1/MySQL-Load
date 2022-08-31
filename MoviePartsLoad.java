@@ -3,37 +3,37 @@ import java.sql.*;
 import java.io.*;
 
 
-public class DistCompanyLoad{
+public class MoviePartsLoad{
 
    private Connection connection;
 
 
-//distCompany TABLE VARIABLES
+//filmParts TABLE VARIABLES
    private int oldMovieID = 0;
    private int newMovieID = 0;
    private int rank = 0;
-   private String distCompanyName = "";
-   private static final int COMPANY_TYPE = 2;
-   private static final String companyNotes = "";
+   private String filmPartsName = "";
+   private String filmPartsTitle = "";
+   private int runtime = 0;
 
    private int previousID = 0;
-   private int distRecordCount = 0;
+   private int filmPartsRecordCount = 0;
 
    
-   private int distCompanyErrors = 0;
-   private int distCompanyRowCount = 0;
+   private int filmPartsErrors = 0;
+   private int filmPartsRowCount = 0;
 
    private GregorianCalendar currentDate;
 
    private PrintWriter out;
 
-   private BufferedReader distCompanyIn;
+   private BufferedReader filmPartsIn;
 
-   private File distCompanyFile;
+   private File filmPartsFile;
 
-   private String distCompanyRecord = "";
+   private String filmPartsRecord = "";
 
-   private String distCompanyFileName = "";
+   private String filmPartsFileName = "";
 
 
    private String date = "";
@@ -45,7 +45,7 @@ public class DistCompanyLoad{
 
 
 
-   public DistCompanyLoad( String inputDate )
+   public MoviePartsLoad( String inputDate )
    {
 
       try
@@ -85,14 +85,14 @@ public class DistCompanyLoad{
 
          out = new PrintWriter(
                new BufferedWriter(
-               new FileWriter("film_company Load Errors.txt")));
+               new FileWriter("film_parts Load Errors.txt")));
 
       }
       catch( IOException ioe ) {
          
          System.out.println( "**************************************" );
          System.out.println( "AN I/O EXCEPTION HAS OCCURRED " );
-         System.out.println( "Dist Company Load Errors.txt" );
+         System.out.println( "Film Parts Load Errors.txt" );
          System.out.println( "**************************************" );
          System.exit( 1 );
       }
@@ -102,12 +102,12 @@ public class DistCompanyLoad{
 
       try {
 
-         distCompanyFileName = directory + "DISTCOMPANY " + date + ".txt";
-         distCompanyFile = new File( distCompanyFileName );
-         if( distCompanyFile.exists() ) {
-            distCompanyIn = new BufferedReader(
-                            new FileReader( distCompanyFile ) );
-            distCompanyRecord = distCompanyIn.readLine();
+         filmPartsFileName = directory + "MOVIE_PARTS " + date + ".txt";
+         filmPartsFile = new File( filmPartsFileName );
+         if( filmPartsFile.exists() ) {
+            filmPartsIn = new BufferedReader(
+                            new FileReader( filmPartsFile ) );
+            filmPartsRecord = filmPartsIn.readLine();
          }
 
       }
@@ -115,26 +115,27 @@ public class DistCompanyLoad{
   
          System.out.println( "**************************************" );
          System.out.println( "AN I/O EXCEPTION HAS OCCURRED " );
-         System.out.println( distCompanyFileName );
+         System.out.println( filmPartsFileName );
          System.out.println( "**************************************" );
          System.exit( 1 );
       } 
       catch( NullPointerException npe ) {
          System.out.println( "**************************************" );
          System.out.println( "Null File: " );
-         System.out.println( distCompanyFileName );
+         System.out.println( filmPartsFileName );
          System.out.println( "**************************************" );
          System.exit( 1 );
       }
 
-      distCompanyLoad();
+      System.out.println("File Name: " + filmPartsFileName);
+      filmPartsLoad();
 
 
       exitProgram();
 
    }
 
-   public void distCompanyLoad()
+   public void filmPartsLoad()
    {
 
       IDTranslate idtrans = new IDTranslate();
@@ -142,17 +143,21 @@ public class DistCompanyLoad{
       String tokens[];
 
 
-      while ( distCompanyRecord != null ) {
-         tokens = distCompanyRecord.split( "~" );
+      while ( filmPartsRecord != null ) {
+         tokens = filmPartsRecord.split( "~" );
 
-         if ( tokens.length == 2 ) {
-            distRecordCount++;
+         if ( tokens.length == 5 ) {
+            filmPartsRecordCount++;
             oldMovieID = Integer.parseInt( tokens[ 0 ] );
+            rank = Integer.parseInt( tokens[ 1 ] );
             newMovieID = idtrans.getNewMovieID( connection, oldMovieID );
 //            System.out.println("Old ID = " + oldMovieID + " New ID: " + newMovieID);
  
 
-            distCompanyName = editForApostrophe( tokens[ 1 ] );
+            filmPartsName = editForApostrophe( tokens[ 2 ] );
+            filmPartsTitle = editForApostrophe( tokens[ 3 ] );
+
+            runtime = Integer.parseInt( tokens[ 4 ] );
 
             if(newMovieID == previousID) {
                rank++;
@@ -163,49 +168,49 @@ public class DistCompanyLoad{
 
 
 
-            String query = "INSERT INTO " + schema + ".film_company VALUES(" +
+            String query = "INSERT INTO " + schema + ".film_parts VALUES(" +
                            newMovieID + ", " +
-                           COMPANY_TYPE + ", " +
                            rank + ", '" +
-                           distCompanyName + "', '" +
-                           companyNotes + "')";
+                           filmPartsName + "', '" +
+                           filmPartsTitle + "', " +
+                           runtime + ")";
 
             if(newMovieID == -1) {
-               distCompanyErrors++;
+               filmPartsErrors++;
             } else {
                insertTable( query );
-               distCompanyRowCount++;
+
             }
          }
          else {
             out.println( "=====================================================" );
-            out.println( "ARRAY NOT CORRECT LENGTH FOR distCompany: " );
-            out.println( distCompanyRecord );
+            out.println( "ARRAY NOT CORRECT LENGTH FOR filmParts: " );
+            out.println( filmPartsRecord );
             out.println( "=====================================================" );
-            distCompanyErrors++;
+            filmPartsErrors++;
          }
 
          
-         readdistCompanyRecord();
+         readFilmPartsRecord();
 
       }
-      System.out.println( "film_company COMPLETE: " + distCompanyRowCount + " ROWS" );
+      System.out.println( "film_parts COMPLETE: " + filmPartsRowCount + " ROWS" );
     
          
    }
 
 
 
-   private void readdistCompanyRecord() {
+   private void readFilmPartsRecord() {
    
 
       try {
-         distCompanyRecord = distCompanyIn.readLine();
+         filmPartsRecord = filmPartsIn.readLine();
       }
       catch( IOException ioe ) {
          System.out.println( "*************************************************" );
          System.out.println( "INPUT/OUTPUT ERROR HAS OCCURRED" );
-         System.out.println( "THE INPUT FILE IS " + distCompanyFileName );
+         System.out.println( "THE INPUT FILE IS " + filmPartsFileName );
          ioe.printStackTrace();
          System.out.println( "*************************************************" );
          System.exit( 1 );
@@ -239,8 +244,11 @@ public class DistCompanyLoad{
          out.println( output );
          out.println( "=================================================================" );
          System.out.println( output );
+         filmPartsErrors++;
+         return;
 
       }
+        filmPartsRowCount++;
 
 
    }
@@ -273,9 +281,9 @@ public class DistCompanyLoad{
        out.println( "MOVIE LIST TABLE RELOAD TOTALS: " );
        out.println( "-------------------------- " );
        out.println( "                           " );
-       out.println( "TOTAL INPUT ROWS:                    " + distRecordCount );
-       out.println( "TOTAL film_company ROWS:           " + distCompanyRowCount );
-       out.println( "film_company ROWS IN ERROR:        " + distCompanyErrors );
+       out.println( "TOTAL INPUT ROWS:                    " + filmPartsRecordCount );
+       out.println( "TOTAL film_parts ROWS:               " + filmPartsRowCount );
+       out.println( "film_parts ROWS IN ERROR:            " + filmPartsErrors );
 
 
        out.close();
@@ -288,7 +296,7 @@ public class DistCompanyLoad{
    public static void main( String args[] )
    {
       String date = args[ 0 ];
-      new DistCompanyLoad( date );
+      new MoviePartsLoad( date );
    }
 
   

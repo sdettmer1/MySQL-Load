@@ -214,7 +214,7 @@ public class MovieMasterLoad{
             }
             lastUpdate = tokens[ 16 ].trim();
 
-            String query = "INSERT INTO " + schema + ".MOVIE_MASTER VALUES(" +
+            String query = "INSERT INTO " + schema + ".film_master VALUES (" +
                            movieID + ", '" +
                            title + "', " +
                            releaseYear + ", " +
