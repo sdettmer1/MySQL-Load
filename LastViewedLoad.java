@@ -11,10 +11,11 @@ public class LastViewedLoad{
 //lastViewed TABLE VARIABLES
    private int oldMovieID = 0;
    private int newMovieID = 0;
-   private String title = "";
-   private int releaseYear = 0;
    private int lastViewedYear = 0;
    private int lastViewedMonth = 0;
+   private String title = "";
+   private int releaseYear = 0;
+   
 
    private int lastViewedRecordCount = 0;
 
@@ -101,7 +102,7 @@ public class LastViewedLoad{
 
       try {
 
-         lastViewedFileName = directory + "LAST_VIEWED " + date + ".txt";
+         lastViewedFileName = directory + "LAST_SELECTED " + date + ".txt";
          lastViewedFile = new File( lastViewedFileName );
          if( lastViewedFile.exists() ) {
             lastViewedIn = new BufferedReader(
@@ -149,7 +150,7 @@ public class LastViewedLoad{
             lastViewedRecordCount++;
             lastViewedYear = Integer.parseInt( tokens [ 0 ] );
             lastViewedMonth = Integer.parseInt( tokens [ 1 ] );
-            title = editForApostrophe( tokens [ 2 ] );
+            title = tokens [ 2 ];
             releaseYear = Integer.parseInt( tokens [ 3 ] );
             oldMovieID = Integer.parseInt( tokens[ 4 ] );
        
@@ -160,11 +161,10 @@ public class LastViewedLoad{
 
 
             String query = "INSERT INTO " + schema + ".film_last_viewed VALUES(" +
+                           newMovieID + ", " +
                            lastViewedYear + ", " +
-                           lastViewedMonth + ", " +
-                           title + "', " +
-                           releaseYear + ", " +
-                           newMovieID + ")";
+                           lastViewedMonth + ")";
+
 
             if(newMovieID == -1) {
                out.println("Error: " + oldMovieID  + "  " + title);
