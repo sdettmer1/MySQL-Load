@@ -87,7 +87,7 @@ public class CinematographerLoad05 {
 
          out = new PrintWriter(
                new BufferedWriter(
-               new FileWriter("CINEMATOGRAPHERr Load Errors.txt")));
+               new FileWriter("CINEMATOGRAPHER Load Errors.txt")));
 
       }
       catch( IOException ioe ) {
@@ -278,8 +278,8 @@ public class CinematographerLoad05 {
        out.println( "-------------------------- " );
        out.println( "                           " );
        out.println( "TOTAL INPUT ROWS:               " + cinematographerRecordCount );
-       out.println( "TOTAL PRODUCER ROWS:            " + cinematographerRowCount );
-       out.println( "PRODUCER ROWS IN ERROR:         " + cinematographerErrors );
+       out.println( "TOTAL CINEMATOGRAPHER ROWS:     " + cinematographerRowCount );
+       out.println( "CINEMATOGRAPHER ROWS IN ERROR:  " + cinematographerErrors );
 
 
        out.close();
