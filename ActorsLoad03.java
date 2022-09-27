@@ -2,7 +2,14 @@ import java.util.*;
 import java.sql.*;
 import java.io.*;
 
-
+/**
+* This class adds data from a ~ delimited text file to the film_person
+* table (type = 3) in the movies database
+*
+* @author Shane Dettmer
+* @version 1.1
+* @since 2022-09-05
+*/
 public class ActorsLoad03 {
 
    private Connection connection;
@@ -47,7 +54,13 @@ public class ActorsLoad03 {
       "C:\\Users\\Shane Dettmer\\OneDrive\\Documents\\Movies\\Backups\\";
 
 
-
+   /**
+   * This constructor accepts the input date of the text file
+   * from the command line.  It will establish the MySQL connection
+   * creates the needed files and initiates the loading process
+   *
+   * @param inputDate This is the date of the text file entered on command line
+   */
    public ActorsLoad03( String inputDate )
    {
 
@@ -137,7 +150,14 @@ public class ActorsLoad03 {
 
    }
 
-// THIS METHOD LOADS THE DATA TO THE TABLE
+   /**
+   * This method loops through the text file, extracting the data
+   * data from each record and then INSERTs a new record into the 
+   * table.
+   * 
+   * @param none.
+   * @return Nothing.
+   */
    public void actorLoad()
    {
 
