@@ -2,7 +2,14 @@ import java.util.*;
 import java.sql.*;
 import java.io.*;
 
-
+/**
+* This class adds data from a ~ delimited text file to the film_alternate_title
+* table in the movies database
+*
+* @author Shane Dettmer
+* @version 1.1
+* @since 2022-09-05
+*/
 public class AltTitleLoad{
 
    private Connection connection;
@@ -43,7 +50,13 @@ public class AltTitleLoad{
       "C:\\Users\\Shane Dettmer\\OneDrive\\Documents\\Movies\\Backups\\";
 
 
-
+   /**
+   * Accepts the input date of the text file
+   * from the command line.  It will establish the MySQL connection,
+   * create the needed files and initiate the loading process
+   *
+   * @param inputDate This is the date of the text file entered on command line
+   */
    public AltTitleLoad( String inputDate )
    {
 
@@ -133,6 +146,12 @@ public class AltTitleLoad{
 
    }
 
+   /**
+   * This method loops through the text file, extracting the data
+   * data from each record and then INSERTs a new record into the 
+   * table.
+   * 
+   */
    public void altTitleLoad()
    {
 
@@ -192,7 +211,10 @@ public class AltTitleLoad{
    }
 
 
-
+   /**
+   * Reads next record from input file
+   *
+   */
    private void readaltTitleRecord() {
    
 
@@ -209,7 +231,11 @@ public class AltTitleLoad{
       }
    }
 
-
+   /**
+   * Inserts a record into the database table
+   *
+   *@param query SQL statement that will be executed
+   */
    public void insertTable( String query )
    {
       
@@ -242,7 +268,13 @@ public class AltTitleLoad{
 
    }
 
-
+   /**
+   * Searches for an apostrophe in a given String and then
+   * adds a new apostrophe next to it to prevent SQL errors
+   * 
+   * @param name the String to be edited
+   * @return String Returms the edited version of the input String
+   */
    public static String editForApostrophe( String name )
    {
 
@@ -262,6 +294,11 @@ public class AltTitleLoad{
       return editedInput;
    }
 
+   /**
+   * Writes control totals to the output file and
+   * closes all resources and exits the program
+   *
+   */
    public void exitProgram()
    {
 
@@ -277,11 +314,26 @@ public class AltTitleLoad{
 
        out.close();
 
+      try {
+         connection.close();
+      } catch(SQLException e) {
+         System.out.println( "Error occurred when closing SQL connection:" );
+         System.out.println( "Error Code " + e.getErrorCode() );
+         System.out.println( "SQL State: " + e.getSQLState() );
+         e.printStackTrace();
+      }
+
        System.exit( 0 );
 
    }
    
 
+   /**
+   * Creates an instance of the class and runs the application
+   * One argument is necessary on the command line
+   *
+   * @param args The date portion of the file name in yyyy-mm-dd format
+   */
    public static void main( String args[] )
    {
       String date = args[ 0 ];
