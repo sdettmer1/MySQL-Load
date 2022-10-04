@@ -148,7 +148,7 @@ public class AltTitleLoad{
 
    /**
    * This method loops through the text file, extracting the data
-   * data from each record and then INSERTs a new record into the 
+   * from each record and then INSERTs a new record into the 
    * table.
    * 
    */

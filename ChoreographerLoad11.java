@@ -150,7 +150,7 @@ public class ChoreographerLoad11 {
    }
 
    /**
-   * This method loops through the text file, extracting the data
+   * This method loops through the text file, extracting the
    * data from each record and then INSERTs a new record into the 
    * table.
    * 
